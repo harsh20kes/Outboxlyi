@@ -39,6 +39,7 @@ services:
     name: outboxlyi-redis
     plan: free
     region: singapore
+    maxmemoryPolicy: noeviction
     ipAllowList: []
 
 databases:
