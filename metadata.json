@@ -1,0 +1,8 @@
+{
+  "name": "ReachInbox Scheduler",
+  "description": "Production-grade full-stack email job scheduler with BullMQ, PostgreSQL, Ethereal SMTP, Elasticsearch search, and Slack rate-limit alerts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

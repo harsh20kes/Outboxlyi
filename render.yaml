@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: outboxlyi
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run db:push && npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_URL
+        fromService:
+          name: outboxlyi
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: DATABASE_URL
+        fromDatabase:
+          name: outboxlyi-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: outboxlyi-redis
+          type: keyvalue
+          property: connectionString
+      - key: SLACK_STATE_SECRET
+        generateValue: true
+      - key: WORKER_CONCURRENCY
+        value: "5"
+      - key: MIN_DELAY_BETWEEN_EMAILS_MS
+        value: "2000"
+      - key: MAX_EMAILS_PER_HOUR_PER_SENDER
+        value: "200"
+      - key: ETHEREAL_AUTO_PROVISION
+        value: "true"
+
+  - type: keyvalue
+    name: outboxlyi-redis
+    plan: free
+    region: singapore
+    ipAllowList: []
+
+databases:
+  - name: outboxlyi-db
+    databaseName: outboxlyi
+    user: outboxlyi
+    plan: free
+    region: singapore
