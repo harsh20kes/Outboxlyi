@@ -291,6 +291,12 @@ export async function sendSignupVerificationEmail(params: {
     }
   }
 
+  if (env.nodeEnv === 'production') {
+    throw new Error(
+      'Signup email delivery is not configured. In production, set RESEND_API_KEY and SYSTEM_FROM_EMAIL to a verified sender, or configure SYSTEM_SMTP_* credentials on a host that allows outbound SMTP.'
+    );
+  }
+
   // 3. Ethereal sandbox fallback for preview testing before live System SMTP is set
   if (!cachedEtherealSystemAccount) {
     const account = await createEtherealTestAccount();
